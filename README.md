@@ -1,2 +1,4 @@
-# alopq
-Another list of postgresql queries
+# pgutilities
+
+Some useful queries 
+
