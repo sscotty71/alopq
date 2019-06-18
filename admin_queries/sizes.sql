@@ -19,7 +19,7 @@ from
 select pg_size_pretty(pg_relation_size('tablename'::regclass)); -- Insert table name
 
 
--- Inside tales 
+-- Inside tables 
 SELECT
 pg_size_pretty(pg_relation_size(c.oid, 'main')) AS heap_size, -- heap size
 pg_size_pretty(pg_relation_size(c.oid, 'fsm')) AS fsm_size, -- free space map  size
