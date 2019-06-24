@@ -74,3 +74,11 @@ SELECT sum(numbackends) AS numbackends
 	,sum(blks_hit) * 100 / sum(blks_hit + blks_read) AS hit_ratio
 	,(sum(tup_fetched) * 100) / sum(tup_returned) AS returned_ratio
 FROM pg_stat_database;
+
+-- Long transaction 
+SELECT pid, datname, usename, state, backend_xmin,query_start
+FROM pg_stat_activity
+WHERE backend_xmin IS NOT NULL
+ORDER BY age(backend_xmin) DESC;
+
+-- select  pg_terminate_backend(pid)  -- process pid that must db termitated
