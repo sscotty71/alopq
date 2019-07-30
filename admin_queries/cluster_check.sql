@@ -81,6 +81,11 @@ FROM pg_stat_activity
 WHERE backend_xmin IS NOT NULL
 ORDER BY age(backend_xmin) DESC;
 
+-- N° Long transaction  > 10 minutes
+SELECT count(*)
+FROM pg_stat_activity
+WHERE backend_xmin IS NOT NULL and query_start < now()-interval '10 minutes'
+
 -- select  pg_terminate_backend(pid)  -- process pid that must db termitated
 
 -- Biggest table
