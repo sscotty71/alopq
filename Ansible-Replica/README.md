@@ -1,6 +1,6 @@
 # Ansible script to build a PostgreSQL master/slave on a Ubuntu server
 
-##Usage:
+## Usage:
 
 > ansible-playbook -i hosts-local pgmaster.yml -kK
 
