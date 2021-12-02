@@ -7,6 +7,7 @@
 Options used
 
 > -k : ssh password
+
 > -K : sudo su password
 
 ## PostgreSQL configurator
