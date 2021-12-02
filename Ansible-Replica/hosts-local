@@ -1,0 +1,9 @@
+[allpg]
+pg1
+pg2
+
+[master]
+pg1
+
+[replica]
+pg2

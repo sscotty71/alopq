@@ -1,0 +1,45 @@
+#MODIFICA PARAMETRI KERNEL
+  - name:  Modifica swappiness
+    become: yes
+    become_user: root
+    sysctl:
+     name: vm.swappiness
+     value: '0'
+     state: present
+     reload: yes
+
+  - name:  Modifica overcommit_memory
+    become: yes
+    become_user: root
+    sysctl:
+     name: vm.overcommit_memory
+     value: '2'
+     state: present
+     reload: yes
+
+  - name:  Modifica overcommit_ratio
+    become: yes
+    become_user: root
+    sysctl:
+     name: vm.overcommit_ratio
+     value: '90'
+     state: present
+     reload: yes
+
+  - name:  Modifica dirty_background_ratio
+    become: yes
+    become_user: root
+    sysctl:
+     name: vm.dirty_background_ratio
+     value: '90'
+     state: present
+     reload: yes
+
+  - name:  Modifica dirty_expire_centisecs
+    become: yes
+    become_user: root
+    sysctl:
+     name: vm.dirty_expire_centisecs
+     value: '499'
+     state: present
+     reload: yes

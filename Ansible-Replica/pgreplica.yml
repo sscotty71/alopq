@@ -1,0 +1,47 @@
+  - name: Create pgpassfile
+    become: yes
+    become_user: root
+    template:
+     src: conf/replica/pgpass.j2
+     dest: "{{ pg_postgres_user_dir }}/.pgpass"
+     owner: postgres
+     group: postgres
+     mode: '0600'
+
+  - name: Stop replica server
+    become: yes
+    become_user: root
+    shell: service postgresql stop
+    args:
+     executable: /bin/bash
+
+  - name: Rename pg_data
+    become: yes
+    become_user: root
+    shell: mv {{ pg_data_directory }} {{ pg_data_directory }}.old
+    args:
+     executable: /bin/bash
+
+  - name: Create new pg_data dir
+    become: yes
+    become_user: root
+    file:
+     path: "{{ pg_data_directory }}"
+     state: directory
+     owner: postgres
+     group: postgres
+     mode: '0700'
+
+  - name: Create replica data
+    command: pg_basebackup -h {{ pg_master_ip }} -U replicarole -p 5432 -D {{ pg_data_directory }} -Fp -Xs -P -R -S master
+    become: true
+    become_method: sudo
+    become_user: postgres
+
+
+  - name: Start replica server
+    become: yes
+    become_user: root
+    shell: service postgresql start
+    args:
+     executable: /bin/bash

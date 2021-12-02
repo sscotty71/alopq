@@ -1,0 +1,167 @@
+#COPIA FILE DI CONFIGURAZIONE
+  - name: Copy advanced.conf
+    become: yes
+    become_user: root
+    copy:
+     owner: postgres
+     group: postgres
+     mode: 0664
+     src: "conf/{{ pg_host }}/advanced.conf"
+     dest: "{{ pg_conf_directory }}/advanced.conf"
+
+  - name: Copy locale.conf
+    become: yes
+    become_user: root
+    copy:
+     owner: postgres
+     group: postgres
+     mode: 0664
+     src: "conf/{{ pg_host }}/locale.conf"
+     dest: "{{ pg_conf_directory }}/locale.conf"
+
+  - name: Copy log.conf
+    become: yes
+    become_user: root
+    copy:
+     owner: postgres
+     group: postgres
+     mode: 0664
+     src: "conf/{{ pg_host }}/log.conf"
+     dest: "{{ pg_conf_directory }}/log.conf"
+
+  - name: Copy memory.conf
+    become: yes
+    become_user: root
+    copy:
+     owner: postgres
+     group: postgres
+     mode: 0664
+     src: "conf/{{ pg_host }}//memory.conf"
+     dest: "{{ pg_conf_directory }}/memory.conf"
+
+  - name: Copy monitoring.conf
+    become: yes
+    become_user: root
+    copy:
+     owner: postgres
+     group: postgres
+     mode: 0664
+     src: "conf/{{ pg_host }}/monitoring.conf"
+     dest: "{{ pg_conf_directory }}/monitoring.conf"
+
+  - name: Copy network.conf
+    become: yes
+    become_user: root
+    copy:
+     owner: postgres
+     group: postgres
+     mode: 0664
+     src: "conf/{{ pg_host }}/network.conf"
+     dest: "{{ pg_conf_directory }}/network.conf"
+
+  - name: Copy parallel.conf
+    become: yes
+    become_user: root
+    copy:
+     owner: postgres
+     group: postgres
+     mode: 0664
+     src: "conf/{{ pg_host }}/parallel.conf"
+     dest: "{{ pg_conf_directory }}/parallel.conf"
+
+  - name: Copy wal.conf
+    become: yes
+    become_user: root
+    copy:
+     owner: postgres
+     group: postgres
+     mode: 0664
+     src: "conf/{{ pg_host }}/wal.conf"
+     dest: "{{ pg_conf_directory }}/wal.conf"
+
+  - name: Copy locale.conf
+    become: yes
+    become_user: root
+    copy:
+     owner: postgres
+     group: postgres
+     mode: 0664
+     src: "conf/{{ pg_host }}/wal.conf"
+     dest: "{{ pg_conf_directory }}/locale.conf"
+
+### AGGIUNTA AL Postgresql.conf
+  - name: Insert the advanced.conf module
+    become: yes
+    become_user: root
+    lineinfile:
+      path: "{{ pg_postgresql_conf_dir }}/postgresql.conf"
+      line: include_if_exists 'advanced.conf'
+
+  - name: Insert the log.conf module
+    become: yes
+    become_user: root
+    lineinfile:
+      path: "{{ pg_postgresql_conf_dir }}/postgresql.conf"
+      line: include_if_exists 'conf.d/log.conf'
+
+  - name: Insert the locale.conf module
+    become: yes
+    become_user: root
+    lineinfile:
+      path: "{{ pg_postgresql_conf_dir }}/postgresql.conf"
+      line: include_if_exists 'conf.d/locale.conf'
+
+  - name: Insert the memory.conf module
+    become: yes
+    become_user: root
+    lineinfile:
+      path: "{{ pg_postgresql_conf_dir }}/postgresql.conf"
+      line: include_if_exists 'conf.d/memory.conf'
+
+  - name: Insert the monitoring.conf module
+    become: yes
+    become_user: root
+    lineinfile:
+      path: "{{ pg_postgresql_conf_dir }}/postgresql.conf"
+      line: include_if_exists 'conf.d/monitoring.conf'
+
+  - name: Insert the network.conf module
+    become: yes
+    become_user: root
+    lineinfile:
+      path: "{{ pg_postgresql_conf_dir }}/postgresql.conf"
+      line: include_if_exists 'conf.d/network.conf'
+
+  - name: Insert the parallel.conf module
+    become: yes
+    become_user: root
+    lineinfile:
+      path: "{{ pg_postgresql_conf_dir }}/postgresql.conf"
+      line: include_if_exists 'conf.d/parallel.conf'
+
+  - name: Insert the wal.conf module
+    become: yes
+    become_user: root
+    lineinfile:
+      path: "{{ pg_postgresql_conf_dir }}/postgresql.conf"
+      line: include_if_exists 'conf.d/wal.conf'
+
+  - name: Create pg_hba.conf
+    become: yes
+    become_user: root
+    template:
+     src: conf/master/pg_hba.conf.j2
+     dest: "{{ pg_postgresql_conf_dir }}/pg_hba.conf"
+     owner: postgres
+     group: postgres
+     mode: '0644'
+
+
+# RESTART DEI SERVIZI
+  - name: Restart postgresql
+    become: yes
+    become_user: root
+    shell: service postgresql restart
+    args:
+     executable: /bin/bash
+    tags: postgresql_restart

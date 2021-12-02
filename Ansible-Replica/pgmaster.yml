@@ -1,0 +1,51 @@
+---
+- name: All pg tasks
+  hosts: allpg
+  become: yes
+  tasks:
+
+#VARIABILI GENERALI
+  - name: Include general variables
+    include_vars:
+     file: var_files/pgvars.yml
+
+#MODIFICA PARAMETRI KERNEL
+  - name: Include kernel optimization playbook
+    include: kernel.yml
+
+#INSTALLAZIONE
+  - name: Install Postgresql
+    include: pginstall.yml
+
+#MASTER TASKS
+- hosts: master
+  tasks:
+
+#CONFIGURAZIONE
+  - name: Postgresql configuration
+    include: pgconf.yml
+
+#ESECUZIONE SCRIPT CREAZIONE REPLICATION SLOT
+  - name: Copy sql script replication slot
+    become: yes
+    become_user: root
+    template:
+     src: "sql/{{ pg_host }}/create_physical_replication_slot.sql.j2"
+     dest: "/tmp/create_physical_replication_slot.sql"
+     owner: postgres
+     group: postgres
+     mode: '0644'
+
+  - name: Create db admin user
+    command: psql -f /tmp/create_physical_replication_slot.sql postgres
+    become: true
+    become_method: sudo
+    become_user: postgres
+
+#REPLICA TASKS
+- hosts: replica
+  tasks:
+
+#CONFIGURAZIONE REPLICA
+  - name: Postgresql configuration
+    include: pgreplica.yml

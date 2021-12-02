@@ -1,0 +1,13 @@
+pg_version: 12
+pg_master: "pg1"  # da cambiare in base all'installazione
+pg_replica: "pg2" # da cambiare in base all'installazione
+pg_master_ip: 192.168.12.101
+pg_replica_ip: 192.168.12.102
+pg_data_directory: /var/lib/postgresql/{{ pg_version }}/main
+pg_extra_conf_directory: "{{ pg_data_directory }}/conf.d"
+pg_directory: /var/lib/postgresql/{{ pg_version }}
+pg_conf_directory: /etc/postgresql/{{ pg_version }}/main/conf.d #extra files conf
+pg_postgresql_conf_dir: /etc/postgresql/{{ pg_version }}/main #main files conf
+pg_host: "master"
+pg_password: "SuperSecret"
+pg_postgres_user_dir: /var/lib/postgresql

@@ -1,0 +1,4 @@
+create role replicarole with replication;
+alter role replicarole with password '{{ pg_password }}';
+alter role replicarole with login;
+select pg_create_physical_replication_slot('master');

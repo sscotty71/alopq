@@ -1,0 +1,37 @@
+#AGGIUNTA REPO Postgresql
+  - name: Add postgresql repo key
+    become: yes
+    become_user: root
+    apt_key:
+     url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+     state: present
+
+  - name: Add Postgresql repository
+    become: yes
+    become_user: root
+    apt_repository:
+     repo: deb http://apt.postgresql.org/pub/repos/apt/ focal-pgdg main
+     state: present
+     filename: pgdg
+     update_cache: yes
+
+#INSTALLAZIONE PACCHETTI
+
+  - name: install utilities
+    become: yes
+    become_user: root
+    apt:
+      pkg:
+       - net-tools
+       - htop
+       - postgresql-12
+       - postgresql-12-repack
+       - postgresql-client-12
+       - vim
+       - apt-utils
+       - screen
+       - tmux
+      state: present
+      update_cache: yes
+
+  #Installazione eventuali altre extensions
